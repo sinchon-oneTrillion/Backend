@@ -7,6 +7,6 @@ import java.util.List;
 public record CardLists (
         HttpStatus httpStatus,
         Long userId,
-        List<String> cards
+        List<CardAchieve> cards
 )
 {}

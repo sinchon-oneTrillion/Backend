@@ -3,6 +3,7 @@ package mutsa.server.service;
 import lombok.RequiredArgsConstructor;
 import mutsa.server.domain.Card;
 import mutsa.server.domain.Users;
+import mutsa.server.dto.card.CardAchieve;
 import mutsa.server.dto.card.CardList;
 import mutsa.server.dto.card.CardListResponse;
 import mutsa.server.dto.card.CardListsResponse;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,11 +34,16 @@ public class CardService {
         return new CardListResponse(HttpStatus.CREATED, (long) cards.size());
     }
 
-    public List<String> getCards(String nickname){
+    public List<CardAchieve> getCards(String nickname){
         Users users = usersRepository.findByNickname(nickname)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저 없음: " + nickname));
-        List<String> lists = cardRepository.findListByUserId(users.getId());
-        return lists;
+        List<Card> cards = cardRepository.findAllByUserId_Id(users.getId());
+        return cards.stream()
+                .map(card -> new CardAchieve(
+                        card.getList(),
+                        Boolean.TRUE.equals(card.getAchievement())
+                ))
+                .collect(Collectors.toList());
     }
     public CardListsResponse completeCards(String nickname, CardList cardList){
         Users users = usersRepository.findByNickname(nickname)
