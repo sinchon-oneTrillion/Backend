@@ -29,8 +29,10 @@ jobs:
 
       - name: Grant execute permission
         run: chmod +x ./gradlew
+
       - name: Build with Gradle
         run: ./gradlew build -x test
+
       - name: Copy JAR to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -39,6 +41,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "build/libs/server-0.0.1-SNAPSHOT.jar"
           target: "/home/ubuntu/jar"
+          strip_components: 2
 
       - name: Restart JAR Service on EC2
         uses: appleboy/ssh-action@v1.0.3
