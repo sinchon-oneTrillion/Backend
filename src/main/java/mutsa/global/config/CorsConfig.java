@@ -15,7 +15,7 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // 모든 경로에 대해
+                registry.addMapping("/api/**") // 모든 경로에 대해
                         .allowedOrigins("http://localhost:3000") // 허용할 프론트 도메인
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
                         .allowedHeaders("*")
