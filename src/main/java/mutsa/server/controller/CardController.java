@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/cards")
 @RequiredArgsConstructor
-public class CardContoller {
+public class CardController {
     private final CardService cardService;
     private final UsersRepository usersRepository;
 
