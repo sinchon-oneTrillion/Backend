@@ -51,4 +51,5 @@ public ResponseEntity<CardLists> getCards(@PathVariable String nickname){
         return ResponseEntity.ok(ApiResponse.ok("마이페이지 수정 완료",getMyPagePayload));
     }
 
+
 }
