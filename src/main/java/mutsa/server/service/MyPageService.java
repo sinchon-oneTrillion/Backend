@@ -17,17 +17,17 @@ public class MyPageService {
     private final CardRepository cardRepository;
     private final UsersRepository userRepository;
 
-    public GetMyPagePayload findMain(String nickname){
-        List<Card> selectedCards =cardRepository.findByUser_NicknameAndDateIsNull(nickname).orElseThrow();
-        List<String>message= selectedCards.stream()
-                .map(Card::getList)
-                .toList();
-
-        return GetMyPagePayload.builder()
-                .cards(message)
-                .nickname(nickname)
-                .build();
-    }
+//    public GetMyPagePayload findMain(String nickname){
+//        List<Card> selectedCards =cardRepository.findByUser_NicknameAndDateIsNull(nickname).orElseThrow();
+//        List<String>message= selectedCards.stream()
+//                .map(Card::getList)
+//                .toList();
+//
+//        return GetMyPagePayload.builder()
+//                .cards(message)
+//                .nickname(nickname)
+//                .build();
+//    }
 
     public GetMyPagePayload patchMain(String nickname, PatchMypageRequest req){
         Users user=userRepository.findByNickname(nickname)
@@ -36,7 +36,7 @@ public class MyPageService {
         List<String> remove = req.getRemoveCards() != null ? req.getRemoveCards() : List.of();
 
         if (!remove.isEmpty()) {
-            cardRepository.deleteByUserAndMessageIn(user, remove);
+            cardRepository.deleteByUserIdAndListIn(user, remove);
         }
 
         for (String msg : add) {
@@ -49,7 +49,7 @@ public class MyPageService {
                 cardRepository.save(card);
         }
 
-        List<Card> selectedCards =cardRepository.findByUser_NicknameAndDateIsNull(nickname).orElseThrow();
+        List<Card> selectedCards =cardRepository.findAllByUserId_IdAndDateIsNull(user.getId());
         List<String>message= selectedCards.stream()
                 .map(Card::getList)
                 .toList();

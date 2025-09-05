@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class MyPageController {
     private final MyPageService myPageService;
 
-    @GetMapping("/{nickname}")
-    public ResponseEntity<ApiResponse<GetMyPagePayload>> getMain(@PathVariable String nickname){
-        GetMyPagePayload getMyPagePayload=myPageService.findMain(nickname);
-        return ResponseEntity.ok(ApiResponse.ok("마이페이지 조회 완료",getMyPagePayload));
-    }
+//    @GetMapping("/{nickname}")
+//    public ResponseEntity<ApiResponse<GetMyPagePayload>> getMain(@PathVariable String nickname){
+//        GetMyPagePayload getMyPagePayload=myPageService.findMain(nickname);
+//        return ResponseEntity.ok(ApiResponse.ok("마이페이지 조회 완료",getMyPagePayload));
+//    }
 
     @PatchMapping("/{nickname}")
     public ResponseEntity<ApiResponse<GetMyPagePayload>> patchMain(@PathVariable String nickname, @RequestBody PatchMypageRequest rep){

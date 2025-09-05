@@ -38,7 +38,7 @@ public class CardService {
     public List<CardAchieve> getCards(String nickname){
         Users users = usersRepository.findByNickname(nickname)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저 없음: " + nickname));
-        List<Card> cards = cardRepository.findAllByUserId_IdAndCreatedAtIsNull(users.getId());
+        List<Card> cards = cardRepository.findAllByUserId_IdAndDateIsNull(users.getId());
         return cards.stream()
                 .map(card -> new CardAchieve(
                         card.getList(),

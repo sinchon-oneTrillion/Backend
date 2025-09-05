@@ -14,9 +14,9 @@ import java.util.Optional;
 
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
-    Optional<List<Card>> findByUser_NicknameAndDateIsNull(String nickname);
+//    Optional<List<Card>> findByUser_NicknameAndDateIsNull(String nickname);
 
     @Transactional
-    void deleteByUserAndMessageIn(Users user, Collection<String> messages);
-    List<Card> findAllByUserId_IdAndCreatedAtIsNull(Long userId);
+    void deleteByUserIdAndListIn(Users user, Collection<String> messages);
+    List<Card> findAllByUserId_IdAndDateIsNull(Long userId);
 }
