@@ -2,10 +2,7 @@ package mutsa.server.controller;
 
 import lombok.RequiredArgsConstructor;
 import mutsa.server.domain.Users;
-import mutsa.server.dto.card.CardList;
-import mutsa.server.dto.card.CardListResponse;
-import mutsa.server.dto.card.CardLists;
-import mutsa.server.dto.card.CardListsResponse;
+import mutsa.server.dto.card.*;
 import mutsa.server.repository.UsersRepository;
 import mutsa.server.service.CardService;
 import org.springframework.http.HttpStatus;
@@ -17,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/cards")
 @RequiredArgsConstructor
-public class CardContoller {
+public class CardController {
     private final CardService cardService;
     private final UsersRepository usersRepository;
 
@@ -33,17 +30,16 @@ public class CardContoller {
     }
     @GetMapping("/{nickname}")
     public ResponseEntity<CardLists> getCards(@PathVariable String nickname){
-        List<String> lists = cardService.getCards(nickname);
         Users users = usersRepository.findByNickname(nickname)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저 없음: " + nickname));
+        List<CardAchieve> cards = cardService.getCards(nickname);
         CardLists response = new CardLists(
                 HttpStatus.OK,
                 users.getId(),
-                lists
+                cards
         );
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(response);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     @PostMapping("/complete/{nickname}")
     public ResponseEntity<CardListsResponse> completeCards (

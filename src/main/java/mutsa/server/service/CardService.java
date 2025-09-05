@@ -3,6 +3,7 @@ package mutsa.server.service;
 import lombok.RequiredArgsConstructor;
 import mutsa.server.domain.Card;
 import mutsa.server.domain.Users;
+import mutsa.server.dto.card.CardAchieve;
 import mutsa.server.dto.card.CardList;
 import mutsa.server.dto.card.CardListResponse;
 import mutsa.server.dto.card.CardListsResponse;
@@ -10,9 +11,10 @@ import mutsa.server.repository.CardRepository;
 import mutsa.server.repository.UsersRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,20 +35,29 @@ public class CardService {
         return new CardListResponse(HttpStatus.CREATED, (long) cards.size());
     }
 
-    public List<String> getCards(String nickname){
+    public List<CardAchieve> getCards(String nickname){
         Users users = usersRepository.findByNickname(nickname)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저 없음: " + nickname));
-        List<String> lists = cardRepository.findListByUserId(users.getId());
-        return lists;
+        List<Card> cards = cardRepository.findAllByUserId_IdAndCreatedAtIsNull(users.getId());
+        return cards.stream()
+                .map(card -> new CardAchieve(
+                        card.getList(),
+                        Boolean.TRUE.equals(card.getAchievement())
+                ))
+                .collect(Collectors.toList());
     }
     public CardListsResponse completeCards(String nickname, CardList cardList){
         Users users = usersRepository.findByNickname(nickname)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저 없음: " + nickname));
         for (String listItem : cardList.cards()) {
-            Card card = cardRepository.findByUserIdAndList(users, listItem)
-                    .orElseThrow(() -> new IllegalArgumentException("해당 카드 없음: " + listItem));
-            card.markAsCompleted();
-            cardRepository.save(card);
+            Card newCard = Card.builder()
+                    .userId(users)
+                    .list(listItem)
+                    .achievement(true)
+                    .date(LocalDate.now())
+                    .build();
+
+            cardRepository.save(newCard); // 새로 추가됨
         }
         return new CardListsResponse(HttpStatus.CREATED, "카드 리스트 반영 완료");
     }

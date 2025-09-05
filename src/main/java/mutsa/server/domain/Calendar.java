@@ -19,21 +19,21 @@ public class Calendar {
 
     //FK->Users(id)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "userId")
     private Users userId;
 
     //날짜
-    @Column(name="date",nullable = false,updatable = false)
+    @Column(name="date", updatable = false)
     private LocalDate date;
 
     //이미지
-    @Column(name="picture",nullable = false,length = 50)
+    @Column(name="picture",length = 50)
     private String picture;
 
-    @Column(name="memo",nullable = false,length=50)
+    @Column(name="memo",length=50)
     private String memo;
 
     //달성률
-    @Column(name="achievementRate",nullable=false)
+    @Column(name="achievementRate")
     private Integer achievementRate;
 }

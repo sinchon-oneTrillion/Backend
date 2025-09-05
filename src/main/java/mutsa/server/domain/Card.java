@@ -33,8 +33,4 @@ public class Card {
     //날짜
     @Column(name="date",updatable = false)
     private LocalDate date;
-
-    public void markAsCompleted() {
-        this.achievement = true;
-    }
 }

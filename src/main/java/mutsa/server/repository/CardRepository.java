@@ -18,7 +18,5 @@ public interface CardRepository extends JpaRepository<Card, Long> {
 
     @Transactional
     void deleteByUserAndMessageIn(Users user, Collection<String> messages);
-    @Query("SELECT c.list FROM Card c WHERE c.userId.id = :userId")
-    List<String> findListByUserId(@Param("userId") Long userId);
-    Optional<Card> findByUserIdAndList(Users userId, String list);
+    List<Card> findAllByUserId_IdAndCreatedAtIsNull(Long userId);
 }
