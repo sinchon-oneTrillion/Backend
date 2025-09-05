@@ -19,11 +19,11 @@ public class Card {
 
     //FK->Users(id)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "userId")
     private Users userId;
 
     //card 내용
-    @Column(name="list",nullable = false)
+    @Column(name="list")
     private String list;
 
     //달성여부
@@ -34,4 +34,7 @@ public class Card {
     @Column(name="date",updatable = false)
     private LocalDate date;
 
+    public void markAsCompleted() {
+        this.achievement = true;
+    }
 }

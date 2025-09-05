@@ -1,4 +1,4 @@
-package mutsa.server;
+package mutsa.server.test;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
