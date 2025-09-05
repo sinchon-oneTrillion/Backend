@@ -22,5 +22,6 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     List<Card> findAllByUserId_IdAndDateIsNull(Long userId);
     long countByUserIdAndDate(Users user, LocalDate date);
     long countByUserIdAndDateAndAchievement(Users user, LocalDate date, boolean achievement);
+    List<Card> findByUser_NicknameAndDate(String nickname, LocalDate date);
 
 }
