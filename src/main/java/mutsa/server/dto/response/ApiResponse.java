@@ -17,4 +17,12 @@ public class ApiResponse<T> {
                 .data(data)
                 .build();
     }
+
+    public static<T> ApiResponse<T> fail(String message,T data){
+        return ApiResponse.<T>builder()
+                .status(404)
+                .message(message)
+                .data(data)
+                .build();
+    }
 }

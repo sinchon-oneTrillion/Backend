@@ -6,7 +6,7 @@ import mutsa.server.domain.Users;
 import mutsa.server.dto.request.PatchMypageRequest;
 import mutsa.server.dto.response.GetMyPagePayload;
 import mutsa.server.repository.CardRepository;
-import mutsa.server.repository.UserRepository;
+import mutsa.server.repository.UsersRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +15,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MyPageService {
     private final CardRepository cardRepository;
-    private final UserRepository userRepository;
+    private final UsersRepository userRepository;
 
     public GetMyPagePayload findMain(String nickname){
-        List<Card> selectedCards =cardRepository.findByUser_NicknameAndDateIsNull(nickname);
+        List<Card> selectedCards =cardRepository.findByUser_NicknameAndDateIsNull(nickname).orElseThrow();
         List<String>message= selectedCards.stream()
                 .map(Card::getList)
                 .toList();
@@ -30,7 +30,8 @@ public class MyPageService {
     }
 
     public GetMyPagePayload patchMain(String nickname, PatchMypageRequest req){
-        Users user=userRepository.findByUser_Nickname(nickname);
+        Users user=userRepository.findByNickname(nickname)
+                .orElseThrow();
         List<String> add = req.getAddCards() != null ? req.getAddCards() : List.of();
         List<String> remove = req.getRemoveCards() != null ? req.getRemoveCards() : List.of();
 
@@ -48,7 +49,7 @@ public class MyPageService {
                 cardRepository.save(card);
         }
 
-        List<Card> selectedCards =cardRepository.findByUser_NicknameAndDateIsNull(nickname);
+        List<Card> selectedCards =cardRepository.findByUser_NicknameAndDateIsNull(nickname).orElseThrow();
         List<String>message= selectedCards.stream()
                 .map(Card::getList)
                 .toList();

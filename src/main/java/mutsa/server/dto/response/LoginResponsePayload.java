@@ -1,0 +1,10 @@
+package mutsa.server.dto.response;
+
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
+public class LoginResponsePayload {
+    private String nickname;
+}

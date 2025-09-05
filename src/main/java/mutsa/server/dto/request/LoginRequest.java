@@ -3,6 +3,6 @@ package mutsa.server.dto.request;
 import lombok.Data;
 
 @Data
-public class SignUpRequest {
+public class LoginRequest {
     private String nickname;
 }
