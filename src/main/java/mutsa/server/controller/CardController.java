@@ -28,19 +28,6 @@ public class CardController {
                 .status(response.httpStatus())
                 .body(response);
     }
-    @GetMapping("/{nickname}")
-    public ResponseEntity<CardLists> getCards(@PathVariable String nickname){
-        Users users = usersRepository.findByNickname(nickname)
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저 없음: " + nickname));
-        List<CardAchieve> cards = cardService.getCards(nickname);
-        CardLists response = new CardLists(
-                HttpStatus.OK,
-                users.getId(),
-                cards
-        );
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
     @PostMapping("/complete/{nickname}")
     public ResponseEntity<CardListsResponse> completeCards (
             @PathVariable String nickname,
