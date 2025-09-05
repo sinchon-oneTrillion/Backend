@@ -27,13 +27,13 @@ public class Calendar {
     private LocalDate date;
 
     //이미지
-    @Column(name="picture",nullable = false,length = 50)
+    @Column(name="picture")
     private String picture;
 
-    @Column(name="memo",nullable = false,length=50)
+    @Column(name="memo")
     private String memo;
 
     //달성률
-    @Column(name="achievementRate",nullable=false)
-    private Integer achievementRate;
+//    @Column(name="achievementRate",nullable=false)
+//    private Integer achievementRate;
 }

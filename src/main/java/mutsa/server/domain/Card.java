@@ -3,6 +3,9 @@ package mutsa.server.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -27,4 +30,7 @@ public class Card {
     //달성여부
     @Column(name="achievement",nullable = false)
     private Boolean achievement;
+
+    @Column(name="date")
+    private LocalDate date;
 }
