@@ -23,6 +23,6 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     List<Card> findAllByUserId_IdAndDateIsNull(Long userId);
     long countByUserIdAndDate(Users user, LocalDate date);
     long countByUserIdAndDateAndAchievement(Users user, LocalDate date, boolean achievement);
-    Optional<Card> findByUserId_IdAndListAndDateIsNull(Long userId, String list);
+    Optional<Card> findByUserId_IdAndListAndDateIsNotNull(Long userId, String list);
 
 }

@@ -74,7 +74,7 @@ public class CardService {
         for (String listItem : cardList.cards()) {
             // 기존 카드 중: userId 일치 && list 일치 && date가 null 인 카드 조회
             Optional<Card> optionalCard = cardRepository
-                    .findByUserId_IdAndListAndDateIsNull(users.getId(), listItem);
+                    .findByUserId_IdAndListAndDateIsNotNull(users.getId(), listItem);
             if (optionalCard.isPresent()) {
                 Card card = optionalCard.get();
                 card.setAchievement(true);
