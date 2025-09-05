@@ -19,6 +19,7 @@ public class CorsConfig {
                         .allowedOrigins(
                                 "http://localhost:3001",
                                 "https://localhost:3001",
+                                "https://saechi.shop",
                                 "https://frontend-ebon-six-24.vercel.app") // 허용할 프론트 도메인
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
                         .allowedHeaders("*")
