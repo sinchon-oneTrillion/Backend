@@ -17,14 +17,17 @@ public class Card {
 
     //FK->Users(id)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "userId")
     private Users userId;
 
     //card 내용
-    @Column(name="list",nullable = false)
+    @Column(name="list")
     private String list;
 
     //달성여부
-    @Column(name="achievement",nullable = false)
+    @Column(name="achievement")
     private Boolean achievement;
+    public void markAsCompleted() {
+        this.achievement = true;
+    }
 }
