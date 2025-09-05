@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -19,4 +20,7 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     @Transactional
     void deleteByUserIdAndListIn(Users user, Collection<String> messages);
     List<Card> findAllByUserId_IdAndDateIsNull(Long userId);
+    long countByUserIdAndDate(Users user, LocalDate date);
+    long countByUserIdAndDateAndAchievement(Users user, LocalDate date, boolean achievement);
+
 }

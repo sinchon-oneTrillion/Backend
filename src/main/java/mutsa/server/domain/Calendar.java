@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @Table(name = "Calendar")
@@ -26,14 +27,9 @@ public class Calendar {
     @Column(name="date", updatable = false)
     private LocalDate date;
 
-    //이미지
-    @Column(name="picture",length = 50)
+    @Column(name="picture")
     private String picture;
 
-    @Column(name="memo",length=50)
+    @Column(name="memo")
     private String memo;
-
-    //달성률
-    @Column(name="achievementRate")
-    private Integer achievementRate;
 }
