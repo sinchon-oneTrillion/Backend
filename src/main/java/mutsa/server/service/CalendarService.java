@@ -45,7 +45,7 @@ public class CalendarService {
         LocalDate end   = date.withDayOfMonth(date.lengthOfMonth());
 
         List<Calendar> calendars = calendarRepository
-                .findByUserAndDateBetweenOrderByDateAsc(user, start, end);
+                .findByUserIdAndDateBetweenOrderByDateAsc(user, start, end);
 
         // 3. date에 해당하는 달의 모든 calendar 데이터 찾기
         List<CalendarEntry> result = new ArrayList<>();
@@ -85,7 +85,7 @@ public class CalendarService {
         Users user = usersRepository.findByNickname(nickname).orElseThrow(
                 ()->new RuntimeException("닉네임에 해당하는 유저가 없습니다."));
 
-        Calendar calendar = calendarRepository.findByUserAndDate(user, date)
+        Calendar calendar = calendarRepository.findByUserIdAndDate(user, date)
                 .orElseThrow(() -> new RuntimeException("해당 유저의 해당 날짜 캘린더가 없습니다."));
 
         // 달성률 계산
@@ -109,7 +109,7 @@ public class CalendarService {
         Users user = usersRepository.findByNickname(nickname)
                 .orElseThrow(() -> new RuntimeException("닉네임에 해당하는 유저가 없습니다."));
 
-        Calendar calendar = calendarRepository.findByUserAndDate(user, request.getDate())
+        Calendar calendar = calendarRepository.findByUserIdAndDate(user, request.getDate())
                 .orElseThrow(() -> new RuntimeException("해당 유저의 해당 날짜 캘린더가 없습니다."));
 
         calendar.setPicture(request.getPicture());

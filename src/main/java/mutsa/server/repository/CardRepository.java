@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
-    long countByUserAndDate(Users user, LocalDate date);
-    long countByUserAndDateAndAchievement(Users user, LocalDate date, boolean achievement);
+    long countByUserIdAndDate(Users user, LocalDate date);
+    long countByUserIdAndDateAndAchievement(Users user, LocalDate date, boolean achievement);
 }
