@@ -40,7 +40,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "build/libs/server-0.0.1-SNAPSHOT.jar"
-          target: "/home/ubuntu/jar/"
+          target: "/home/ubuntu/jar/build/libs"
 
       - name: Restart JAR Service on EC2
         uses: appleboy/ssh-action@v1.0.3
