@@ -19,8 +19,10 @@ public interface CardRepository extends JpaRepository<Card, Long> {
 
     @Transactional
     void deleteByUserIdAndListIn(Users user, Collection<String> messages);
+    List<Card> findAllByUserId_IdAndDateIsNotNull(Long userId);
     List<Card> findAllByUserId_IdAndDateIsNull(Long userId);
     long countByUserIdAndDate(Users user, LocalDate date);
     long countByUserIdAndDateAndAchievement(Users user, LocalDate date, boolean achievement);
+    Optional<Card> findByUserId_IdAndListAndDateIsNull(Long userId, String list);
 
 }

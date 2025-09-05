@@ -3,16 +3,15 @@ package mutsa.server.service;
 import lombok.RequiredArgsConstructor;
 import mutsa.server.domain.Card;
 import mutsa.server.domain.Users;
-import mutsa.server.dto.card.CardAchieve;
-import mutsa.server.dto.card.CardList;
-import mutsa.server.dto.card.CardListResponse;
-import mutsa.server.dto.card.CardListsResponse;
+import mutsa.server.dto.card.*;
 import mutsa.server.repository.CardRepository;
 import mutsa.server.repository.UsersRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,15 +24,21 @@ public class CardService {
     public CardListResponse saveCards(String nickname, CardList cardList){
         List<String> cards = cardList.cards();
         for (String content : cards) {
-            Card card = Card.builder()
+            Card originalCard = Card.builder()
                     .userId(usersRepository.findByNickname(nickname).orElseThrow())
                     .list(content)
                     .build();
-            cardRepository.save(card);
+            cardRepository.save(originalCard);
+            Card datedCard = Card.builder()
+                    .userId(usersRepository.findByNickname(nickname).orElseThrow())
+                    .list(content)
+                    .date(LocalDate.now())
+                    .build();
+            cardRepository.save(datedCard);
         }
+
         return new CardListResponse(HttpStatus.CREATED, (long) cards.size());
     }
-
     public List<CardAchieve> getCards(String nickname){
         Users users = usersRepository.findByNickname(nickname)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저 없음: " + nickname));
@@ -45,19 +50,41 @@ public class CardService {
                 ))
                 .collect(Collectors.toList());
     }
+    public CardTrueFalse getCard(String nickname) {
+        Users user = usersRepository.findByNickname(nickname)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저 없음: " + nickname));
+        // 1. 날짜 있는 카드만 가져오기
+        List<Card> datedCards = cardRepository.findAllByUserId_IdAndDateIsNotNull(user.getId());
+        // 2. list 기준으로 그룹핑하여 achieve=true가 하나라도 있으면 true
+        Map<String, Boolean> listAchieveMap = datedCards.stream()
+                .collect(Collectors.toMap(
+                        Card::getList,
+                        card -> Boolean.TRUE.equals(card.getAchievement()),
+                        (existing, replacement) -> existing || replacement // 하나라도 true면 true
+                ));
+        // 3. CardAchieve 리스트로 변환
+        List<CardAchieve> cards = listAchieveMap.entrySet().stream()
+                .map(entry -> new CardAchieve(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
+        return new CardTrueFalse(HttpStatus.OK, user.getId(), cards);
+    }
     public CardListsResponse completeCards(String nickname, CardList cardList) {
         Users users = usersRepository.findByNickname(nickname)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저 없음: " + nickname));
         for (String listItem : cardList.cards()) {
-            Card newCard = Card.builder()
-                    .userId(users)
-                    .list(listItem)
-                    .achievement(true)
-                    .date(LocalDate.now())
-                    .build();
-
-            cardRepository.save(newCard); // 새로 추가됨
+            // 기존 카드 중: userId 일치 && list 일치 && date가 null 인 카드 조회
+            Optional<Card> optionalCard = cardRepository
+                    .findByUserId_IdAndListAndDateIsNull(users.getId(), listItem);
+            if (optionalCard.isPresent()) {
+                Card card = optionalCard.get();
+                card.setAchievement(true);
+                card.setDate(LocalDate.now());
+                cardRepository.save(card);
+            } else {
+                System.out.println("카드 없음 또는 이미 완료된 카드: " + listItem);
+            }
         }
+
         return new CardListsResponse(HttpStatus.CREATED, "카드 리스트 반영 완료");
     }
     public int getAchievementRate(Users user, LocalDate date) {
