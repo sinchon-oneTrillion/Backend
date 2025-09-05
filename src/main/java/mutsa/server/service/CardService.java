@@ -11,7 +11,6 @@ import mutsa.server.repository.CardRepository;
 import mutsa.server.repository.UsersRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,7 +45,7 @@ public class CardService {
                 ))
                 .collect(Collectors.toList());
     }
-    public CardListsResponse completeCards(String nickname, CardList cardList){
+    public CardListsResponse completeCards(String nickname, CardList cardList) {
         Users users = usersRepository.findByNickname(nickname)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저 없음: " + nickname));
         for (String listItem : cardList.cards()) {
@@ -60,5 +59,13 @@ public class CardService {
             cardRepository.save(newCard); // 새로 추가됨
         }
         return new CardListsResponse(HttpStatus.CREATED, "카드 리스트 반영 완료");
+    }
+    public int getAchievementRate(Users user, LocalDate date) {
+        long total = cardRepository.countByUserIdAndDate(user, date);
+        if (total == 0) return 0;
+
+        long achieved = cardRepository.countByUserIdAndDateAndAchievement(user, date, true);
+        return (int) ((achieved * 100) / total); // 소수점 삭제
+
     }
 }

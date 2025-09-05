@@ -30,7 +30,6 @@ public class Card {
     @Column(name="achievement")
     private Boolean achievement;
 
-    //날짜
-    @Column(name="date",updatable = false)
+    @Column(name="date")
     private LocalDate date;
 }
