@@ -12,4 +12,5 @@ public class test {
     private Long testId;
 
     private String name;
+    private String password;
 }
