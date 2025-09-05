@@ -51,7 +51,7 @@ jobs:
           script: |
             set -e
             sudo mkdir -p /etc/myapp
-            sudo tee /etc/myapp/backend.env > /dev/null << 'EOF'
+            sudo tee /etc/myapp/backend.env > /dev/null << EOF
             DB_USERNAME=${{ secrets.DB_USERNAME }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             EOF
