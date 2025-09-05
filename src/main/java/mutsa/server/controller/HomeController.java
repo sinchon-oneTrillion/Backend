@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomeController {
     private final HomeService homeService;
 
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<ApiResponse<HomePayload>> getHome(@PathVariable String nickname){
         HomePayload homePayload=homeService.findHome(nickname);
         return ResponseEntity.ok(ApiResponse.ok("홈페이지 성공",homePayload));

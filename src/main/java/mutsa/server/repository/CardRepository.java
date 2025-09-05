@@ -4,14 +4,11 @@ import jakarta.transaction.Transactional;
 import mutsa.server.domain.Card;
 import mutsa.server.domain.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface CardRepository extends JpaRepository<Card, Long> {
@@ -22,6 +19,6 @@ public interface CardRepository extends JpaRepository<Card, Long> {
     List<Card> findAllByUserId_IdAndDateIsNull(Long userId);
     long countByUserIdAndDate(Users user, LocalDate date);
     long countByUserIdAndDateAndAchievement(Users user, LocalDate date, boolean achievement);
-    List<Card> findByUser_NicknameAndDate(String nickname, LocalDate date);
+    List<Card> findByUserIdAndDate(Long Id, LocalDate date);
 
 }
