@@ -11,6 +11,7 @@ import mutsa.server.repository.CardRepository;
 import mutsa.server.repository.UsersRepository;
 import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -62,6 +63,7 @@ public class CalendarService {
 
     }
 
+    @Transactional
     public CalendarRegisterDto registerCalendar(String nickname, CalendarRegisterDto request) {
         Users user = usersRepository.findByNickname(nickname).orElseThrow(
                 ()->new RuntimeException("닉네임에 해당하는 유저가 없습니다."));
@@ -94,6 +96,31 @@ public class CalendarService {
                 .memo(calendar.getMemo())
                 .date(calendar.getDate())
                 .achievementRate(achievementRate)
+                .build();
+    }
+
+    @Transactional
+    public CalendarRegisterDto modifyRegister(String nickname, CalendarRegisterDto request) {
+
+        if (request == null) {
+            throw new IllegalArgumentException("request가 null 입니다.");
+        }
+
+        Users user = usersRepository.findByNickname(nickname)
+                .orElseThrow(() -> new RuntimeException("닉네임에 해당하는 유저가 없습니다."));
+
+        Calendar calendar = calendarRepository.findByUserAndDate(user, request.getDate())
+                .orElseThrow(() -> new RuntimeException("해당 유저의 해당 날짜 캘린더가 없습니다."));
+
+        calendar.setPicture(request.getPicture());
+        calendar.setMemo(request.getMemo());
+
+        calendarRepository.save(calendar);
+
+        return CalendarRegisterDto.builder()
+                .date(calendar.getDate())
+                .picture(calendar.getPicture())
+                .memo(calendar.getMemo())
                 .build();
     }
 }

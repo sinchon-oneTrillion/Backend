@@ -41,4 +41,12 @@ public class CalendarController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/{nickname}")
+    public ResponseEntity<CalendarRegisterDto> modifyCalendar(
+            @PathVariable String nickname,
+            @RequestBody CalendarRegisterDto request) {
+        CalendarRegisterDto response = calendarService.modifyRegister(nickname, request);
+        return ResponseEntity.ok(response);
+    }
+
 }
