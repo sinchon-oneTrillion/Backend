@@ -23,18 +23,14 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           cache-disabled: false
-
       - name: Grant execute permission
         run: chmod +x ./gradlew
-
       - name: Build with Gradle
         run: ./gradlew build -x test
-
       - name: Copy JAR to EC2
         uses: appleboy/scp-action@v0.1.7
         with:
