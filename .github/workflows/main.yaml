@@ -37,16 +37,16 @@ jobs:
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
-          username: ec2-user
+          username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "build/libs/server-0.0.1-SNAPSHOT.jar"
-          target: "/home/ec2-user/jar/"
+          target: "/home/ubuntu/jar/"
 
       - name: Restart JAR Service on EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
-          username: ec2-user
+          username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             set -e
